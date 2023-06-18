@@ -1,0 +1,26 @@
+# custom ssh config
+
+Port 8452
+
+# Authentication:
+PermitRootLogin yes
+MaxAuthTries 3
+PubkeyAuthentication yes
+
+PasswordAuthentication yes
+
+# some PAM modules and threads)
+KbdInteractiveAuthentication no
+
+UsePAM yes
+
+X11Forwarding no
+PrintMotd no
+
+Banner /etc/ssh/custom_banner
+
+# Allow client to pass locale environment variables
+AcceptEnv LANG LC_*
+
+# override default of no subsystems
+Subsystem       sftp    /usr/lib/openssh/sftp-server
