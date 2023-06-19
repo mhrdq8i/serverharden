@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# define color's variables
+# define color variables
 BLACK='\033[1;30m'
 BLUE='\033[0;34m'
 RED='\033[1;31m'
@@ -58,24 +58,24 @@ read -p "please enter a user's name: " user
 useradd -m $user --shell /bin/bash
 mkdir -p $user/.ssh
 
-# set new password for new user
+# set a new password for new user
 passwd $user
 while [ $? -ne 0 ];do
     printf "please enter the new user's password below \n"
     passwd $user
 done
 
-# add new user to sudeor group
+# add the new user to sudeor group
 usermod -aG sudo $user
 
 # lock root login
 usermod --lock root
 
-# create custom ssh banner
-# apt update -y && apt install -y figlet
-# figlet drsrv > /etc/ssh/custom_banner
+# create a custom ssh banner
+apt update -y && apt install -y figlet
+figlet drsrv > /etc/ssh/custom_banner
 
-# change ssh defult config [port, root login, restrict login with password]
+# change ssh default config [port, root login, restrict login with password]
 printf "${RED}did you copy sshkey for new user!? ${NC}\n"
 read -p "[ yes | no ] or 'e' to exit: " answer
 
