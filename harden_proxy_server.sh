@@ -92,7 +92,6 @@ while [ true ]; do
             continue
         ;;
         e)
-            
             printf "${GREEN}BYE! ${NC}\n"
             exit 0
         ;;
