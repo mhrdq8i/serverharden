@@ -58,7 +58,7 @@ read -p "please enter a user's name: " user
 useradd -m $user --shell /bin/bash
 mkdir -p $user/.ssh
 
-# set a new password for new user
+# set a new password for user
 passwd $user
 while [ $? -ne 0 ];do
     printf "please enter the new user's password below \n"
