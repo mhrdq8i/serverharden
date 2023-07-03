@@ -3,11 +3,10 @@
 Port 8452
 
 # Authentication:
-PermitRootLogin yes
+PermitRootLogin no
 MaxAuthTries 3
 PubkeyAuthentication yes
-
-PasswordAuthentication yes
+PasswordAuthentication no
 
 # some PAM modules and threads)
 KbdInteractiveAuthentication no
