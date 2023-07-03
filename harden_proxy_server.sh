@@ -24,6 +24,7 @@ function fn_yes {
 }
 
 function fn_ufw {
+    sed -i s/IPV6=yes/IPV6=no/ /etc/default/ufw
     ssh_pn=`cat /etc/ssh/sshd_config | grep "Port " | cut -d" " -f2`
     printf "ssh port number is ${PURPLE}$ssh_pn${NC}\n"
     sleep 3
