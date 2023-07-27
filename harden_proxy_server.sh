@@ -78,7 +78,7 @@ figlet drsrv > /etc/ssh/custom_banner
 
 # change ssh default config [port, root login, restrict login with password]
 printf "${RED}did you copy sshkey for new user!? ${NC}\n"
-read -p "[ yes | no ] or 'e' to exit: " answer
+read -p "enter [ yes | no ] or [e] to exit: " answer
 
 while [ true ]; do
     case $answer in
