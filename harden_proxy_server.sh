@@ -73,7 +73,7 @@ usermod -aG sudo $user
 usermod --lock root
 
 # create a custom ssh banner
-apt update -y && apt install -y figlet
+apt update -y && apt install -y figlet ufw
 figlet drsrv > /etc/ssh/custom_banner
 
 # change ssh default config [port, root login, restrict login with password]
@@ -93,6 +93,7 @@ while [ true ]; do
             continue
         ;;
         e)
+            userdel -r $user
             printf "${GREEN}BYE! ${NC}\n"
             exit 0
         ;;
