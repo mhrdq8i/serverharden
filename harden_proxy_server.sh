@@ -75,6 +75,7 @@ function fn_cpnusr_lrusr {
 }
 
 # create a custom ssh banner
+printf "${PURPLE}running some background commands, please be patient ${NC} \n"
 apt update -y >/dev/null 2>&1
 apt install -y figlet ufw >/dev/null 2>&1
 figlet drsrv > /etc/ssh/custom_banner
