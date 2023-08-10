@@ -48,33 +48,42 @@ function fn_else {
     read -p "usage: just [ yes | no ] or 'e' to exit enter again: " answer
 }
 
-# check user is root or sudoer or not
-if [ "$EUID" -ne 0 ]; then
-    printf "${YELLOW}please run as root's privilege ${NC}\n"
-    exit 1
-fi
+function fn_cpnusr_lrusr {
+    # check user is root or sudoer or not
+    if [ "$EUID" -ne 0 ]; then
+        printf "${YELLOW}please run as root's privilege ${NC}\n"
+        exit 1
+    fi
 
-# create and promote new user
-read -p "please enter a user's name: " user
-useradd -m $user --shell /bin/bash
-mkdir -p $user/.ssh
+    # create and promote new user
+    read -p "please enter a user's name: " user
+    useradd -m $user --shell /bin/bash
+    mkdir -p $user/.ssh
 
-# set a new password for user
-passwd $user
-while [ $? -ne 0 ];do
-    printf "please enter the new user's password below \n"
+    # set a new password for user
     passwd $user
-done
+    while [ $? -ne 0 ];do
+        printf "please enter the new user's password below \n"
+        passwd $user
+    done
 
-# add the new user to sudeor group
-usermod -aG sudo $user
+    # add the new user to sudeor group
+    usermod -aG sudo $user
 
-# lock root login
-usermod --lock root
+    # lock root login
+    usermod --lock root
+}
 
 # create a custom ssh banner
-apt update -y && apt install -y figlet ufw
+apt update -y >/dev/null 2>&1
+apt install -y figlet ufw >/dev/null 2>&1
 figlet drsrv > /etc/ssh/custom_banner
+printf "${YELLOW}ssh banner has been configured ${NC} \n"
+printf "${YELLOW}apt update & install has been done ${NC} \n"
+
+
+# run fn create & promot new user & lock root user
+fn_cpnusr_lrusr
 
 # change ssh default config [port, root login, restrict login with password]
 printf "${RED}did you copy sshkey for new user!? ${NC}\n"
@@ -100,7 +109,7 @@ while [ true ]; do
         *)
             fn_else
             continue
-            
+
         ;;
     esac
 done
