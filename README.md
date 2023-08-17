@@ -10,7 +10,11 @@ The script is waiting for you to copy your `public ssh key` to your new user's h
 --- 
 
 ### Follow the below command to copy your `public key`
-> $ ssh-copy-id -p <default_port_number> -i ./<your_public_key>.pub <new_user>@<server_address>
+```bash
+$ ssh-copy-id -p <default_port_number> -i /path/to/<your_public_key> <new_user>@<server_address>
+```
 
 ### Test your connection
-> $ ssh <your_server_ip_address> -p 8452 -l <new_user>
+```bash
+$ ssh <your_server_ip_address> -p 8452 -l <new_user>
+```
