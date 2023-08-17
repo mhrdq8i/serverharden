@@ -5,7 +5,7 @@ Run `bash harden_proxy_server.sh`
 
 The script is waiting for you to copy your `public ssh key` to your new user's home directory that was created recently. 
 
-**Note:** `UFW` will be enabled after the script run, and the ssh port will be changed to `8452`, also you can't login into ssh through password.
+**Note:** `UFW` will be enabled after the script run, and the ssh port will be changed to `8452`, also you can't login into ssh through [password](https://github.com/mehrdad-drpc/serverharden/blob/edc3601d1befeb838a87acca3e3294eac1698990/sshd_config#L9).
 
 --- 
 
