@@ -57,7 +57,8 @@ function fn_cpnusr_lrusr {
 
     # delete duplicate user & create & promote new user
     read -p "please enter a user's name: " user
-    userdel -r $user
+    ## TODO: add if then active userdel
+    # userdel -r $user
     useradd -m $user --shell /bin/bash
     mkdir -p $user/.ssh
 
