@@ -55,8 +55,9 @@ function fn_cpnusr_lrusr {
         exit 1
     fi
 
-    # create and promote new user
+    # delete duplicate user & create & promote new user
     read -p "please enter a user's name: " user
+    userdel -r $user
     useradd -m $user --shell /bin/bash
     mkdir -p $user/.ssh
 
