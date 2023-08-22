@@ -10,7 +10,6 @@ YELLOW='\033[1;33m'
 PURPLE='\033[0;35m'
 NC='\033[0m' # No Color
 
-
 # check user is root or sudoer or not
 if [ "$EUID" -ne 0 ]; then
     printf "${YELLOW}please run as root's privilege ${NC}\n"
@@ -103,11 +102,9 @@ if [ $rl_answr  = "yes" ]; then
     usermod --lock root
 fi
 
-
 # change ssh default config [port, root login, restrict login with password]
 printf "${RED}did you copy sshkey for new user!? ${NC}\n"
 read -p "enter [ yes | no ] or [e] to exit: " answer
-
 while [ true ]; do
     case $answer in
         yes)
