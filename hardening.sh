@@ -24,26 +24,26 @@ function fn_yes {
     printf "${GREEN}config file has been copied ${NC}\n"
     sleep 1
     systemctl restart ssh
-    printf "${PURPLE}ssh service status${NC}\t"
-    systemctl status sshd | awk 'NR==2{ print $4 }' | tr --delete ";"
-    printf "${PURPLE}ssh port(s) status${NC}\n"
-    ss -tulpn | grep ssh | head --lines 1
+    ssh_status=`systemctl status sshd | awk 'NR==2{ print $4 }' | tr --delete ";"`
+    printf "ssh service status is ${GREEN}$ssh_status${NC}\n"
+    sleep 3
 }
 
 function fn_ufw {
     sed --in-place s/IPV6=yes/IPV6=no/ /etc/default/ufw
     ssh_pn=`cat /etc/ssh/sshd_config | grep "Port " | cut --delimiter=" " -f2`
-    printf "ssh port number is ${PURPLE}$ssh_pn${NC}\n"
+    printf "new ssh port number is ${GREEN}$ssh_pn${NC}\n"
     sleep 3
-    ufw allow $ssh_pn
     printf "${RED_BLINK}ENABLING UFW !!!${NC}\n"
+    ufw allow $ssh_pn > /dev/null 2>&1
     ufw enable
-    sleep 3
+    printf "${PURPLE}list of activated ports by UFW on your system${NC}\n"
     ufw status
+    sleep 3
 }
 
 function fn_no {
-    printf "${BLACK}HINT: ${NC}'ssh-copy-id -p $ssh_pn -i ./id_rsa.pub ${user}@<your-server-addr>' \n"
+    printf "${BLACK}HINT: ${NC}'ssh-copy-id -p <default-port-number | 22> -i ./id_rsa.pub ${user}@<your-server-addr>' \n"
     printf "${PURPLE}Go back and return after copy, I'm wating for you :) ${NC}\n"
     printf "${RED_BLINK}did you copy sshkey? ${NC}\n"
     read -p "[ yes | no ] or 'e' to exit: " answer
@@ -60,26 +60,26 @@ function fn_create_promot_new_user {
     read -p "please enter a user's name: " user
     id $user > /dev/null 2>&1
     if [ $? -eq 0 ]; then
-        printf "${RED}user [$user] does exists ${NC}\n"
-        userdel --remove $user
+        printf "${RED}$user does exists ${NC}\n"
+        userdel --remove $user > /dev/null 2>&1
+        printf "${GREEN}$user was deleted ${NC}\n"
         useradd --create-home $user --shell /bin/bash
         mkdir --parents $user/.ssh
         rm --recursive --force ./$user
-        printf "${GREEN}user [$user] was deleted & created clearly ${NC}\n"
-        sleep 3
+        printf "${GREEN}$user was created successfully${NC}\n"
     else
         useradd --create-home $user --shell /bin/bash
         mkdir --parents $user/.ssh
-        rm -rf ./$user
-        printf "${GREEN}user [$user] was created ${NC}\n"
+        rm --recursive --force ./$user
+        printf "${GREEN}$user was created successfully${NC}\n"
         sleep 3
     fi
     
     # set a new password for user
-    passwd $user
+    passwd $user > /dev/null 
     while [ $? -ne 0 ];do
         printf "please enter the new user's password below \n"
-        passwd $user
+        passwd $user > /dev/null
     done
     
     # add the new user to sudeor group
@@ -92,8 +92,7 @@ printf "${PURPLE}running some background tasks, please be patient ${NC} \n"
 apt update -y > /dev/null 2>&1
 apt install -y figlet ufw > /dev/null 2>&1
 figlet drsrv > /etc/ssh/custom_banner
-printf "${YELLOW}ssh banner has been configured ${NC} \n"
-printf "${YELLOW}apt update & install has been done ${NC} \n"
+printf "apt update & install has been done \n"
 
 # run function create & promot new user
 fn_create_promot_new_user
