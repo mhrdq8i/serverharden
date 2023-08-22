@@ -19,10 +19,10 @@ fi
 
 # define functions
 function fn_yes {
-    rm -f /etc/ssh/sshd_config
+    rm --force /etc/ssh/sshd_config
     cp  ${PWD}/sshd_config /etc/ssh/sshd_config
-    sleep 1
     printf "${GREEN}config file has been copied ${NC}\n"
+    sleep 1
     systemctl restart ssh
     printf "${PURPLE}ssh service status${NC}\t"
     systemctl status sshd | awk 'NR==2{ print $4 }' | tr --delete ";"
@@ -37,46 +37,43 @@ function fn_ufw {
     sleep 3
     ufw allow $ssh_pn
     printf "${RED_BLINK}ENABLING UFW !!!${NC}\n"
-    sleep 3
     ufw enable
     sleep 3
     ufw status
 }
 
 function fn_no {
-    printf "${PURPLE}Go back and return after copy, I'm wating for you :) ${NC}\n"
     printf "${BLACK}HINT: ${NC}'ssh-copy-id -p $ssh_pn -i ./id_rsa.pub ${user}@<your-server-addr>' \n"
-    sleep 10
+    printf "${PURPLE}Go back and return after copy, I'm wating for you :) ${NC}\n"
     printf "${RED_BLINK}did you copy sshkey? ${NC}\n"
     read -p "[ yes | no ] or 'e' to exit: " answer
 }
 
 function fn_else {
+    rm --recursive --force ./$user
     read -p "usage: just [ yes | no ] or 'e' to exit enter again: " answer
 }
 
 function fn_create_promot_new_user {
-    
     printf "${GREEN}create a non-root user to increase your security!!! ${NC}\n"
     # delete duplicate user & create & promote new user
     read -p "please enter a user's name: " user
     id $user > /dev/null 2>&1
     if [ $? -eq 0 ]; then
-        printf "${RED}user [$user] is exists ${NC}\n"
+        printf "${RED}user [$user] does exists ${NC}\n"
         userdel --remove $user
         useradd --create-home $user --shell /bin/bash
         mkdir --parents $user/.ssh
-        rm -rf ./$user
+        rm --recursive --force ./$user
         printf "${GREEN}user [$user] was deleted & created clearly ${NC}\n"
-        sleep 2
+        sleep 3
     else
         useradd --create-home $user --shell /bin/bash
         mkdir --parents $user/.ssh
         rm -rf ./$user
         printf "${GREEN}user [$user] was created ${NC}\n"
-        sleep 2
+        sleep 3
     fi
-    
     
     # set a new password for user
     passwd $user
@@ -86,13 +83,8 @@ function fn_create_promot_new_user {
     done
     
     # add the new user to sudeor group
-    usermod -aG sudo $user
+    usermod --append --groups sudo $user
     
-}
-
-function fn_lock_root_login {
-    # lock root login
-    usermod --lock root
 }
 
 # create a custom ssh banner
@@ -103,14 +95,13 @@ figlet drsrv > /etc/ssh/custom_banner
 printf "${YELLOW}ssh banner has been configured ${NC} \n"
 printf "${YELLOW}apt update & install has been done ${NC} \n"
 
-
-# run fn create & promot new user
+# run function create & promot new user
 fn_create_promot_new_user
 
 # lock root login
 read -p "would you like to disable root login? [ yes | no ]: " rl_answr
 if [ $rl_answr  = "yes" ]; then
-    fn_lock_root_login
+    usermod --lock root
 fi
 
 
@@ -131,7 +122,7 @@ while [ true ]; do
             continue
         ;;
         e)
-            userdel -r $user
+            userdel --remove $user
             printf "${RED}The user $user has been removed${NC}\n"
             printf "${GREEN}BYE! ${NC}\n"
             exit 0
