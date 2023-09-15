@@ -89,7 +89,7 @@ function fn_create_promot_new_user {
 # create a custom ssh banner
 printf "${PURPLE}running some background tasks, please be patient ${NC} \n"
 apt update -y > /dev/null 2>&1
-apt install -y figlet ufw > /dev/null 2>&1
+apt install -y figlet ufw vnstat > /dev/null 2>&1
 figlet drsrv > /etc/ssh/custom_banner
 printf "apt update & install has been done \n"
 
