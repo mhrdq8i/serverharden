@@ -96,11 +96,14 @@ printf "apt update & install has been done \n"
 # run function create & promot new user
 fn_create_promot_new_user
 
-# lock root login
-read -p "would you like to disable root login? [ yes | no ]: " rl_answr
-if [ $rl_answr  = "yes" ]; then
-    usermod --lock root
-fi
+function fn_lock_root {
+    # lock root login
+    read -p "would you like to disable root login? [ yes | no ]: " rl_answr
+    if [ $rl_answr  = "yes" ]; then
+        usermod --lock root
+    fi
+}
+
 
 # change ssh default config [port, root login, restrict login with password]
 printf "${RED}did you copy sshkey for new user!? ${NC}\n"
@@ -109,6 +112,7 @@ while [ true ]; do
     case $answer in
         yes)
             fn_yes
+            fn_lock_root
             fn_ufw
             cat /etc/ssh/custom_banner
             exit 0
