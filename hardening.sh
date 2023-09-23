@@ -17,7 +17,7 @@ if [ "$EUID" -ne 0 ]; then
 fi
 
 # define functions
-function fn_yes {
+function fn_ssh {
     rm --force /etc/ssh/sshd_config
     cp  ${PWD}/sshd_config /etc/ssh/sshd_config
     printf "${GREEN}config file has been copied ${NC}\n"
@@ -75,7 +75,7 @@ function fn_create_promot_new_user {
     fi
     
     # set a new password for user
-    passwd $user > /dev/null 
+    passwd $user > /dev/null
     while [ $? -ne 0 ];do
         printf "please enter the new user's password below \n"
         passwd $user > /dev/null
@@ -104,6 +104,18 @@ function fn_lock_root {
     fi
 }
 
+function fn_change_hostname {
+    # change hostname
+    printf "Your hostname is: ${GREEN}`hostname -A` ${NC}\n"
+    read -p "would you like to change it? [ yes | no ]: " hn_answr
+    if [ $hn_answr  = "yes" ]; then
+        read -p "Enter the new hostname: " new_host_name
+        hostnamectl set-hostname $new_host_name
+        # exec -l bash
+        printf "Your hostname is changed to: ${GREEN}$new_host_name ${NC}\n"
+    fi
+}
+
 
 # change ssh default config [port, root login, restrict login with password]
 printf "${RED}did you copy sshkey for new user!? ${NC}\n"
@@ -111,7 +123,8 @@ read -p "enter [ yes | no ] or [e] to exit: " answer
 while [ true ]; do
     case $answer in
         yes)
-            fn_yes
+            fn_change_hostname
+            fn_ssh
             fn_lock_root
             fn_ufw
             cat /etc/ssh/custom_banner
