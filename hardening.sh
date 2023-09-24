@@ -20,7 +20,7 @@ fi
 function fn_ssh {
     rm --force /etc/ssh/sshd_config
     cp  ${PWD}/sshd_config /etc/ssh/sshd_config
-    printf "${GREEN}config file has been copied ${NC}\n"
+    printf "${GREEN}ssh config file has been copied ${NC}\n"
     sleep 1
     systemctl restart ssh
     ssh_status=`systemctl status sshd | awk 'NR==2{ print $4 }' | tr --delete ";"`
@@ -28,7 +28,17 @@ function fn_ssh {
     sleep 3
 }
 
+function fn_custom_ssh_banner {
+    # create a custom ssh banner
+    printf "${PURPLE}config ssh banner ${NC} \n"
+    apt install -y figlet > /dev/null 2>&1
+    figlet drsrv > /etc/ssh/custom_banner
+    printf "apt update & install has been done \n"
+}
+
 function fn_ufw {
+    printf "${PURPLE}install & configure ufw ${NC} \n"
+    apt install -y ufw > /dev/null 2>&1
     sed --in-place s/IPV6=yes/IPV6=no/ /etc/default/ufw
     ssh_pn=`cat /etc/ssh/sshd_config | grep "Port " | cut --delimiter=" " -f2`
     printf "new ssh port number is ${GREEN}$ssh_pn${NC}\n"
@@ -83,18 +93,7 @@ function fn_create_promot_new_user {
     
     # add the new user to sudeor group
     usermod --append --groups sudo $user
-    
 }
-
-# create a custom ssh banner
-printf "${PURPLE}running some background tasks, please be patient ${NC} \n"
-apt update -y > /dev/null 2>&1
-apt install -y figlet ufw > /dev/null 2>&1
-figlet drsrv > /etc/ssh/custom_banner
-printf "apt update & install has been done \n"
-
-# run function create & promot new user
-fn_create_promot_new_user
 
 function fn_lock_root {
     # lock root login
@@ -116,6 +115,14 @@ function fn_change_hostname {
 }
 
 
+#update apt repo
+printf "${PURPLE}updating 'apt' repo please be patient... ${NC}\n"
+apt update -y > /dev/null 2>&1
+
+# run function create & promot new user
+fn_create_promot_new_user
+
+
 # change ssh default config [port, root login, restrict login with password]
 printf "${RED}did you copy sshkey for new user!? ${NC}\n"
 read -p "enter [ yes | no ] or [e] to exit: " answer
@@ -124,6 +131,7 @@ while [ true ]; do
         yes)
             fn_change_hostname
             fn_ssh
+            fn_custom_ssh_banner
             fn_lock_root
             fn_ufw
             cat /etc/ssh/custom_banner
