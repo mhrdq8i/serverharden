@@ -50,7 +50,7 @@ function fn_no {
 
 function fn_else {
     rm --recursive --force ./$user
-    read -p "usage: just [ yes | no ] or 'e' to exit enter again: " answer
+    read -p "usage: just [ yes | no ] or [ e ] to exit enter again: " answer
 }
 
 function fn_create_promot_new_user {
@@ -89,7 +89,7 @@ function fn_create_promot_new_user {
 # create a custom ssh banner
 printf "${PURPLE}running some background tasks, please be patient ${NC} \n"
 apt update -y > /dev/null 2>&1
-apt install -y figlet ufw vnstat > /dev/null 2>&1
+apt install -y figlet ufw > /dev/null 2>&1
 figlet drsrv > /etc/ssh/custom_banner
 printf "apt update & install has been done \n"
 
@@ -107,11 +107,10 @@ function fn_lock_root {
 function fn_change_hostname {
     # change hostname
     printf "Your hostname is: ${GREEN}`hostname -A` ${NC}\n"
-    read -p "would you like to change it? [ yes | no ]: " hn_answr
+    read -p "would you like to change it [ yes | no ]: " hn_answr
     if [ $hn_answr  = "yes" ]; then
         read -p "Enter the new hostname: " new_host_name
         hostnamectl set-hostname $new_host_name
-        # exec -l bash
         printf "Your hostname is changed to: ${GREEN}$new_host_name ${NC}\n"
     fi
 }
@@ -143,7 +142,6 @@ while [ true ]; do
         *)
             fn_else
             continue
-            
         ;;
     esac
 done
