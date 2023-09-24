@@ -47,10 +47,7 @@ $ ssh-copy-id -p <default_port_number> -i /path/to/<your_public_key> <new_user>@
 ```bash
 $ ssh <your_server_ip_address> -p 8452 -l <new_user>
 ```
-
 <br/>
-
-# Now it's time to install services
 
 ## Install `internal` and `external` services
 
