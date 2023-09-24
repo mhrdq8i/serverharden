@@ -55,11 +55,10 @@ function fn_no {
     printf "${BLACK}HINT: ${NC}'ssh-copy-id -p <default-port-number | 22> -i ./id_rsa.pub ${user}@<your-server-addr>' \n"
     printf "${PURPLE}Go back and return after copy, I'm wating for you :) ${NC}\n"
     printf "${RED_BLINK}did you copy sshkey? ${NC}\n"
-    read -p "[ yes | no ] or 'e' to exit: " answer
+    read -p "[ yes | no ] or [ e ] to exit: " answer
 }
 
 function fn_else {
-    rm --recursive --force ./$user
     read -p "usage: just [ yes | no ] or [ e ] to exit enter again: " answer
 }
 
@@ -125,7 +124,7 @@ fn_create_promot_new_user
 
 # change ssh default config [port, root login, restrict login with password]
 printf "${RED}did you copy sshkey for new user!? ${NC}\n"
-read -p "enter [ yes | no ] or [e] to exit: " answer
+read -p "enter [ yes | no ] or [ e ] to exit: " answer
 while [ true ]; do
     case $answer in
         yes)
