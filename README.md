@@ -51,7 +51,7 @@ $ ssh <your_server_ip_address> -p 8452 -l <new_user>
 
 ## Install `internal` and `external` services
 
-install necessary services in '`internal`' and '`external`' servers
+install necessary services in `internal` and `external` servers
 
 ### Run the following file [_install_services.sh_](install_services.sh) and enter the inputs
 
