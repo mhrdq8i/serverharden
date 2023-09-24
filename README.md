@@ -34,12 +34,6 @@ The script is waiting for you to copy your `public ssh key` to your new user's h
 
 **Note:** `UFW` will be enabled after the script is run, and the ssh port will be changed to `8452`, also you can't login into ssh through [password](https://github.com/mehrdad-drpc/serverharden/blob/edc3601d1befeb838a87acca3e3294eac1698990/sshd_config#L9) due to new ssh config.
 
-### move the haproxy [config sample file](haproxy.cfg) via this command
-
-```bash
-sudo mv --force --verbose haproxy.cfg /etc/haproxy/haproxy.cfg
-```
-
 ---
 
 ### Follow the below command to copy your `public key`
@@ -52,4 +46,18 @@ $ ssh-copy-id -p <default_port_number> -i /path/to/<your_public_key> <new_user>@
 
 ```bash
 $ ssh <your_server_ip_address> -p 8452 -l <new_user>
+```
+
+<br/>
+
+# Now it's time to install services
+
+## Install `internal` and `external` services
+
+install necessary services in '`internal`' and '`external`' servers
+
+### Run the following file [_install_services.sh_](install_services.sh) and enter the inputs
+
+```bash
+sudo bash install_services.sh
 ```
