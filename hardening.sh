@@ -111,7 +111,7 @@ function fn_change_hostname {
     if [ $hn_answr  = "yes" ]; then
         read -p "Enter the new hostname: " new_host_name
         hostnamectl set-hostname $new_host_name
-        printf "Your hostname is changed to: ${GREEN}$new_host_name ${NC}\n"
+        printf "Your hostname is changed to ${GREEN}$new_host_name ${NC}\n"
     fi
 }
 
