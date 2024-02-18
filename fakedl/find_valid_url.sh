@@ -1,5 +1,8 @@
 #!/bin/bash
 
+script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+# Function to start download with valid link
 curl_req() {
     local vurl="$1"
     local req=$(curl -scL "$vurl" -o /tmp/`date +%A%d%b%y-%H%M%S`)
@@ -22,7 +25,7 @@ while IFS= read -r url; do
     elif ! is_valid_url "$url"; then
 	continue	
     fi
-done < "urls.txt"
+done < "$script_dir/urls.txt"
 
 echo "No valid URL found"
 
