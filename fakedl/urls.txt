@@ -1,3 +1,4 @@
+https://laotzu.ftp.acc.umu.se/debian-cd/current/amd64/iso-dvd/debian-12.5.0-amd64-DVD-1.iso
 https://laotzu.ftp.acc.umu.se/debian-cd/current/amd64/iso-cd/debian-edu-12.5.0-amd64-netinst.iso
 https://releases.ubuntu.com/23.10/ubuntu-23.10-live-server-amd64.iso
 https://repo.iut.ac.ir/repo/archlinux/iso/2024.02.01/archlinux-x86_64.iso
