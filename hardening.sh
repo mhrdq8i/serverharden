@@ -22,6 +22,7 @@ function fn_ssh {
     cp  ${PWD}/sshd_config /etc/ssh/sshd_config
     printf "${GREEN}ssh config file has been copied ${NC}\n"
     sleep 1
+    systemctl enable ssh
     systemctl restart ssh
     ssh_status=`systemctl status sshd | awk 'NR==2{ print $4 }' | tr --delete ";"`
     printf "ssh service status is ${GREEN}$ssh_status${NC}\n"
